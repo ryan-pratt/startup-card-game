@@ -1,0 +1,28 @@
+@import './style-variables';
+
+.host-selector-screen {
+  padding: calc(30px + 2vmin) 0;
+
+  .modal {
+    position: absolute;
+    top: calc(100px + 2vmin);
+    right: calc(160px + 2vmin);
+    left: calc(160px + 2vmin);
+    min-height: 20vh;
+    background-color: $color-dark-transparent;
+    backdrop-filter: blur(4px) brightness(33%);
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  
+  .button {
+    padding: 12px;
+    width: 33vw;
+    background-color: $color-dim;
+    cursor: pointer;
+  }
+}
