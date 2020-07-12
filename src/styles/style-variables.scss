@@ -1,0 +1,22 @@
+// --------- COLORS ---------
+$color-highlight: rgba(0,255,255,1);
+
+$color-light: rgba(230,230,230,1);
+$color-mid: rgba(130,130,130,1);
+$color-dim: rgba(70,70,70,1);
+$color-dark: rgba(28,28,28,1);
+
+$color-light-transparent: rgba(230,230,230,0.2);
+$color-mid-transparent: rgba(130,130,130,0.2);
+$color-dark-transparent: rgba(30,30,30,0.2);
+
+$color-brand-text: rgba(72,245,20,1);
+
+
+// --------- FONTS ---------
+$font-mono: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+
+
+// --------- DIMENSIONS ---------
+$header-font-size: calc(10px + 2vmin);
+$header-height: calc(24px + 2vmin); // this isn't exact but it's good enough for now
