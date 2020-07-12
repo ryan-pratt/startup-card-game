@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles/App.scss';
 import HostSelector from './components/host-selector';
+import Game from './game';
 
 type AppState = {
   hasStarted : boolean,
@@ -42,7 +43,7 @@ class App extends React.Component<{}, AppState> {
         </header>
   
         <div className="game-container">
-          <HostSelector codeCallback={this.setCode} startCallback={this.startGame} />
+          {this.state.hasStarted ? <Game isHosting={this.state.isHosting} /> : <HostSelector codeCallback={this.setCode} startCallback={this.startGame} />}
         </div>
       </div>
     );
