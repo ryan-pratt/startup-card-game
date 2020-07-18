@@ -4,7 +4,8 @@ import DeckCard from './objects/deckCard';
 import './styles/game.scss';
 
 type GameProps = {
-  isHosting : boolean
+  isHosting : boolean,
+  gameCode : string
 }
 
 type GameState = {
@@ -27,6 +28,7 @@ class Game extends React.Component<GameProps, GameState> {
         <img src={card.image} alt={card.name} />
         <p>this is the game content</p>
         {this.props.isHosting ? <p>this user is hosting</p> : <p>this user is not hosting</p>}
+        <p>the game code is: {this.props.gameCode}</p>
       </div>
     );
   }

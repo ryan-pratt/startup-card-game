@@ -20,7 +20,9 @@ class App extends React.Component<{}, AppState> {
   }
 
   setCode = (code : string, isHosting : boolean) : void => {
-    // TODO: start server session
+    if (isHosting) {
+      // TODO: start server session
+    }
     this.setState({
       gameCode: code,
       isHosting: isHosting
@@ -34,6 +36,7 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() : JSX.Element {
+    const { isHosting, hasStarted, gameCode } = this.state;
     return (
       <div className="app">
         <header className="app-header">
@@ -43,7 +46,7 @@ class App extends React.Component<{}, AppState> {
         </header>
   
         <div className="game-container">
-          {this.state.hasStarted ? <Game isHosting={this.state.isHosting} /> : <HostSelector codeCallback={this.setCode} startCallback={this.startGame} />}
+          {hasStarted && gameCode !== null ? <Game isHosting={isHosting} gameCode={gameCode} /> : <HostSelector codeCallback={this.setCode} startCallback={this.startGame} />}
         </div>
       </div>
     );
