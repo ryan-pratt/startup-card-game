@@ -1,5 +1,10 @@
 const BURNOUT_LIMIT : number = 3;
 
+type TickInfo = {
+  projectPoints : number,
+  isDead : boolean
+}
+
 enum CardType {
   Employee,
   Knowledge,
@@ -73,6 +78,8 @@ class DeckCard {
   efficiency : number;
   name : string;
   image : string;
+  isFaceUp : boolean;
+  isPlanned : boolean;
 
   constructor(id : number) {
     let cardInfo = infoLookup[id];
@@ -85,11 +92,31 @@ class DeckCard {
     this.efficiency = cardInfo[4];
     this.name = cardInfo[5];
     this.image = `/img/cards/${padLeft(this.id, 2)}.png`;
+
+    this.isFaceUp = true;
+    this.isPlanned = false;
   }
 
-  tick = () : boolean => {
+  tick = () : TickInfo => {
+    if (this.isPlanned) this.cost = Math.max(0, this.cost - 1); // planned cards cost 1 less per turn until played
+
     this.burnout++;
-    return this.burnout >= BURNOUT_LIMIT;
+    return {
+      projectPoints: this.efficiency,
+      isDead: this.burnout >= BURNOUT_LIMIT
+    };
+  }
+
+  plan = () : void => {
+    if (this.type === CardType.Action) {
+      this.isFaceUp = false;
+      this.isPlanned = true;
+    }
+  }
+
+  play = () : void => {
+    this.isFaceUp = true;
+    this.isPlanned = false;
   }
 }
 
