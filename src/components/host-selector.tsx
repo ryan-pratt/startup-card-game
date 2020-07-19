@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/host-selector.scss';
 
 type HostSelectorProps = {
-  codeCallback : Function,
+  sessionCallback : Function,
   startCallback : Function
 }
 
@@ -23,22 +23,19 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
   }
 
   startGame = () : void => {
-    const { codeCallback, startCallback } = this.props;
-    const { showGuestModal, code } = this.state;
-    if (showGuestModal) {
-      codeCallback(code);
-    }
-    startCallback();
+    const { startCallback } = this.props;
+    const { showHostModal, code } = this.state;
+    startCallback(code, showHostModal);
   }
 
-  openHostModal = () : void => {
-    const { codeCallback } = this.props;
+  openHostModal = async () : Promise<void> => {
+    const { sessionCallback } = this.props;
     const code = Math.random().toString(36).substring(2,6);
     this.setState({
       code: code,
       showHostModal: true
     });
-    codeCallback(code);
+    await sessionCallback(code, true);
   }
   
   openGuestModal = () : void => {
@@ -56,7 +53,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
   _renderButtons = () : JSX.Element => {
     return (
       <div className="button-container">
-        <div className="button" onClick={() => this.openHostModal()}>
+        <div className="button" onClick={async () => await this.openHostModal()}>
           <h3>Click here to host a game</h3>
           <p>You will be given a code to share with the other people so they can join your game.</p>
         </div>
