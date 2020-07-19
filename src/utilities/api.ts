@@ -5,5 +5,8 @@ const server : string = "http://localhost:5000";
 export default {
   startSession: async (code : string) : Promise<void> => {
     await axios.post(`${server}/start`, {code: code});
+  },
+  joinSession: async (code : string) : Promise<void> => {
+    await axios.put(`${server}/start`, {code: code});
   }
 }

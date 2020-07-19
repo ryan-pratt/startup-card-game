@@ -1,8 +1,8 @@
 import React from 'react';
+import api from '../utilities/api';
 import '../styles/host-selector.scss';
 
 type HostSelectorProps = {
-  sessionCallback : Function,
   startCallback : Function
 }
 
@@ -22,20 +22,27 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
     };
   }
 
-  startGame = () : void => {
+  startGame = async () : Promise<void> => {
     const { startCallback } = this.props;
     const { showHostModal, code } = this.state;
-    startCallback(code, showHostModal);
+    if (code !== null) {
+      if (!showHostModal) {
+        await api.joinSession(code);
+      }
+      startCallback(code, showHostModal);
+    }
+    else {
+      alert('An error occurred starting the game. Idk how you even got here (pending a TODO on this component)');
+    }
   }
 
   openHostModal = async () : Promise<void> => {
-    const { sessionCallback } = this.props;
     const code = Math.random().toString(36).substring(2,6);
     this.setState({
       code: code,
       showHostModal: true
     });
-    await sessionCallback(code, true);
+    await api.startSession(code);
   }
   
   openGuestModal = () : void => {
@@ -86,7 +93,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
           <div className="modal">
             {showHostModal ? <p>Code: {code}</p> : this._renderCodeInput()}
             <div className="button-container">
-              <div className="button" onClick={() => this.startGame()}> {/* TODO: disable when code hasn't been entered */}
+              <div className="button" onClick={async () => await this.startGame()}> {/* TODO: disable when code hasn't been entered */}
                 <p>Start</p>
               </div>
             </div>

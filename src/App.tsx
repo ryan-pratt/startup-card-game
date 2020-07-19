@@ -2,7 +2,6 @@ import React from 'react';
 import './styles/App.scss';
 import HostSelector from './components/host-selector';
 import Game from './game';
-import api from './utilities/api';
 
 type AppState = {
   hasStarted : boolean,
@@ -18,10 +17,6 @@ class App extends React.Component<{}, AppState> {
       isHosting: false,
       gameCode: null
     };
-  }
-
-  startSession = async (code : string) : Promise<void> => {
-    await api.startSession(code);
   }
 
   startGame = (code : string, isHosting : boolean) : void => {
@@ -43,7 +38,7 @@ class App extends React.Component<{}, AppState> {
         </header>
   
         <div className="game-container">
-          {hasStarted && gameCode !== null ? <Game isHosting={isHosting} gameCode={gameCode} /> : <HostSelector sessionCallback={this.startSession} startCallback={this.startGame} />}
+          {hasStarted && gameCode !== null ? <Game isHosting={isHosting} gameCode={gameCode} /> : <HostSelector startCallback={this.startGame} />}
         </div>
       </div>
     );
