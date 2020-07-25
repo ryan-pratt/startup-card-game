@@ -8,6 +8,7 @@ type HostSelectorProps = {
 }
 
 type HostSelectorState = {
+  playerCount : number,
   code : string | null,
   showHostModal : boolean,
   showGuestModal : boolean
@@ -17,6 +18,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
   constructor(props : HostSelectorProps) {
     super(props);
     this.state = {
+      playerCount: 0,
       showHostModal: false,
       showGuestModal: false,
       code: null
@@ -29,6 +31,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
     if (code !== null) {
       if (!showHostModal) {
         await api.joinSession(code);
+        this.joinRoom();
       }
       startCallback(code, showHostModal);
     }
@@ -37,13 +40,27 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
     }
   }
 
+  joinRoom = () : void => {
+    this.props.socket.emit('join', {room: this.state.code});
+  }
+
+  updatePlayerCount = (event : any) : void => {
+    this.setState({
+      playerCount: parseInt(event.playerCount)
+    })
+  }
+
   openHostModal = async () : Promise<void> => {
     const code = Math.random().toString(36).substring(2,6);
+
     this.setState({
       code: code,
       showHostModal: true
     });
     await api.startSession(code);
+    
+    this.joinRoom();
+    this.props.socket.on('player-join', this.updatePlayerCount);
   }
   
   openGuestModal = () : void => {
@@ -82,9 +99,19 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
       </div>
     );
   }
+
+  _renderCodeOutput = () : JSX.Element =>{
+    const { code, playerCount } = this.state;
+    return (
+      <div>
+        <p>Code: {code}</p>
+        <p>{playerCount} {playerCount === 1 ? 'person has' : 'people have'} joined your game.</p>
+      </div>
+    );
+  }
   
   render() : JSX.Element {
-    const { showHostModal, showGuestModal, code } = this.state;
+    const { showHostModal, showGuestModal } = this.state;
     const modalOpen = showHostModal || showGuestModal;
 
     return (
@@ -92,7 +119,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
         {this._renderButtons()}
         {modalOpen && 
           <div className="modal">
-            {showHostModal ? <p>Code: {code}</p> : this._renderCodeInput()}
+            {showHostModal ? this._renderCodeOutput() : this._renderCodeInput()}
             <div className="button-container">
               <div className="button" onClick={async () => await this.startGame()}> {/* TODO: disable when code hasn't been entered */}
                 <p>Start</p>
