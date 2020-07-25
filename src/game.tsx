@@ -1,11 +1,11 @@
 import React from 'react';
-import io from 'socket.io-client';
 import api from './utilities/api';
 import Deck from './objects/deck';
 import DeckCard from './objects/deckCard';
 import './styles/game.scss';
 
 type GameProps = {
+  socket : SocketIOClient.Socket,
   isHosting : boolean,
   gameCode : string
 }
@@ -20,17 +20,6 @@ class Game extends React.Component<GameProps, GameState> {
     this.state = {
       deck: new Deck()
     };
-  }
-
-  componentDidMount() : void {
-    const { gameCode } = this.props;
-    const socket = io.connect("http://localhost:5000", {
-      reconnection: true
-    });
-    socket.emit('join', {room: gameCode});
-    socket.on('test', (message : any) => {
-      console.log('test', message);
-    });
   }
   
   render() : JSX.Element {

@@ -1,4 +1,5 @@
 import React from 'react';
+import io from 'socket.io-client';
 import './styles/App.scss';
 import HostSelector from './components/host-selector';
 import Game from './game';
@@ -10,6 +11,10 @@ type AppState = {
 }
 
 class App extends React.Component<{}, AppState> {
+  socket : SocketIOClient.Socket = io.connect("http://localhost:5000", {
+    reconnection: true
+  });
+
   constructor(props : any) {
     super(props);
     this.state = {
@@ -33,12 +38,12 @@ class App extends React.Component<{}, AppState> {
       <div className="app">
         <header className="app-header">
           <p>
-            root@nerok.dog:~$ ./IT_Startup.sh
+            root@nerok.dog:~$ ./IT_Startup {gameCode && '-c ' + gameCode}
           </p>
         </header>
   
         <div className="game-container">
-          {hasStarted && gameCode !== null ? <Game isHosting={isHosting} gameCode={gameCode} /> : <HostSelector startCallback={this.startGame} />}
+          {hasStarted && gameCode !== null ? <Game isHosting={isHosting} gameCode={gameCode} socket={this.socket} /> : <HostSelector startCallback={this.startGame} socket={this.socket} />}
         </div>
       </div>
     );

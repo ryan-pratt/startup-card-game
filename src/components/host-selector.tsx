@@ -3,6 +3,7 @@ import api from '../utilities/api';
 import '../styles/host-selector.scss';
 
 type HostSelectorProps = {
+  socket : SocketIOClient.Socket,
   startCallback : Function
 }
 
