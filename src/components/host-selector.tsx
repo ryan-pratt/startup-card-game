@@ -30,10 +30,18 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
     const { showHostModal, code } = this.state;
     if (code !== null) {
       if (!showHostModal) {
-        const playerId : string = await api.joinSession(code);
-        this.joinRoom(playerId);
+        const playerId : string | null = await api.joinSession(code).catch((reason : any) => {
+          alert(reason.response.data);
+          return null;
+        });
+        if (playerId !== null) {
+          this.joinRoom(playerId);
+        }
+        else {
+          return; // don't call startCallback
+        }
       }
-      startCallback(code, showHostModal);
+      await startCallback(code, showHostModal);
     }
     else {
       alert('An error occurred starting the game. Idk how you even got here (pending a TODO on this component)');
