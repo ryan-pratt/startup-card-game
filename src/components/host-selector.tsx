@@ -30,8 +30,8 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
     const { showHostModal, code } = this.state;
     if (code !== null) {
       if (!showHostModal) {
-        await api.joinSession(code);
-        this.joinRoom();
+        const playerId : string = await api.joinSession(code);
+        this.joinRoom(playerId);
       }
       startCallback(code, showHostModal);
     }
@@ -40,8 +40,9 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
     }
   }
 
-  joinRoom = () : void => {
+  joinRoom = (playerId : string) : void => {
     this.props.socket.emit('join', {room: this.state.code});
+    this.props.socket.emit('join', {room: `${this.state.code}-${playerId}`});
   }
 
   updatePlayerCount = (event : any) : void => {
@@ -59,7 +60,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
     });
     await api.startSession(code);
     
-    this.joinRoom();
+    this.joinRoom('host');
     this.props.socket.on('player-join', this.updatePlayerCount);
   }
   
