@@ -69,7 +69,7 @@ const padLeft = (num : number, digits : number) : string => {
   return str;
 }
 
-class DeckCard {
+class Card {
   id : number;
   type : CardType;
   employeeType : EmployeeType | null;
@@ -120,4 +120,4 @@ class DeckCard {
   }
 }
 
-export default DeckCard;
+export default Card;
