@@ -1,3 +1,5 @@
+import RandomStuff from '../helpers/randomStuff';
+
 const BURNOUT_LIMIT : number = 3;
 
 type TickInfo = {
@@ -70,7 +72,8 @@ const padLeft = (num : number, digits : number) : string => {
 }
 
 class Card {
-  id : number;
+  instanceId : string;
+  cardId : number;
   type : CardType;
   employeeType : EmployeeType | null;
   cost : number;
@@ -81,17 +84,18 @@ class Card {
   isFaceUp : boolean;
   isPlanned : boolean;
 
-  constructor(id : number) {
-    let cardInfo = infoLookup[id];
+  constructor(cardId : number) {
+    let cardInfo = infoLookup[cardId];
 
-    this.id = id;
+    this.instanceId = RandomStuff.getString(28);
+    this.cardId = cardId;
     this.type = cardInfo[0];
     this.employeeType = this.type === CardType.Employee ? cardInfo[1] : null;
     this.cost = cardInfo[2];
     this.burnout = 0 - cardInfo[3];
     this.efficiency = cardInfo[4];
     this.name = cardInfo[5];
-    this.image = `/img/cards/${padLeft(this.id, 2)}.png`;
+    this.image = `/img/cards/${padLeft(this.cardId, 2)}.png`;
 
     this.isFaceUp = true;
     this.isPlanned = false;

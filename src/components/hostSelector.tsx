@@ -1,4 +1,5 @@
 import React from 'react';
+import RandomStuff from '../helpers/randomStuff';
 import api from '../utilities/api';
 import '../styles/host-selector.scss';
 
@@ -60,7 +61,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
   }
 
   openHostModal = async () : Promise<void> => {
-    const code = Math.random().toString(36).substring(2,6);
+    const code = RandomStuff.getString(4);
 
     this.setState({
       code: code,
@@ -130,7 +131,7 @@ class HostSelector extends React.Component<HostSelectorProps, HostSelectorState>
           <div className="modal">
             {showHostModal ? this._renderCodeOutput() : this._renderCodeInput()}
             <div className="button-container">
-              <div className="button" onClick={async () => await this.startGame()}> {/* TODO: disable when code hasn't been entered */}
+              <div className="button" onClick={async () => await this.startGame()}> {/* TODO: disable when code hasn't been entered or no players have joined */}
                 <p>Start</p>
               </div>
             </div>

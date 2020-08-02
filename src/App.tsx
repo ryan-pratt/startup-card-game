@@ -2,7 +2,7 @@ import React from 'react';
 import io from 'socket.io-client';
 import api from './utilities/api';
 import './styles/App.scss';
-import HostSelector from './components/host-selector';
+import HostSelector from './components/hostSelector';
 import Game from './game';
 
 type AppState = {

@@ -10,7 +10,7 @@ export default {
   },
   joinSession: async (code : string) : Promise<string> => {
     const response : AxiosResponse = await axios.put(`${server}/session`, {code: code});
-    return response.data
+    return response.data;
   },
 
   startGame: () : Promise<void> => {
