@@ -17,7 +17,16 @@ export default {
     return axios.post(`${server}/start`, null);
   },
 
+  getTurnNumber: async () : Promise<number> => {
+    const response : AxiosResponse = await axios.get(`${server}/turn`);
+    return parseInt(response.data);
+  },
   endTurn: () : Promise<void> => {
     return axios.post(`${server}/turn`)
+  },
+
+  drawCard: async () : Promise<number> => {
+    const response : AxiosResponse = await axios.get(`${server}/card`);
+    return parseInt(response.data);
   }
-}
+};

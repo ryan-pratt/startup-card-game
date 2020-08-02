@@ -1,0 +1,11 @@
+@import './style-variables';
+
+.card-renderer {
+  margin: 2px;
+  flex: 0 1 calc(20% - 4px);
+
+  img {
+    border-radius: 12px;
+    width: 100%;
+  }
+}
