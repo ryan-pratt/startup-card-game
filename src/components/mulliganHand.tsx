@@ -42,6 +42,19 @@ class MulliganHand extends React.Component<MulliganHandProps, MulliganHandState>
     });
   }
 
+  commit = async () : Promise<void> => {
+    const { allCards, selectedCards } = this.state;
+    const selected = allCards.filter(card => selectedCards.includes(card.instanceId));
+    const remaining = allCards.filter(card => !selectedCards.includes(card.instanceId));
+    for (const card of selected) {
+      await Deck.discard(card);
+    }
+    const newCards = await Deck.drawMany(selectedCards.length);
+    this.setState({
+      allCards: remaining.concat(newCards)
+    });
+  }
+
   render() : JSX.Element {
     const { allCards, selectedCards } = this.state;
     const renderedCards = allCards.map((card : Card) => {
@@ -55,6 +68,12 @@ class MulliganHand extends React.Component<MulliganHandProps, MulliganHandState>
         <p>It's a mulligan hand, so you can select any cards you don't want. Those will be discarded and you'll draw new cards to replace them.</p>
         <div className="hand">
           {renderedCards}
+        </div>
+        <div className="button-container">
+          <div className="button" onClick={async () => await this.commit()}>
+            <h3>Continue</h3>
+            <p>Discard any selected cards</p>
+          </div>
         </div>
       </div>
     );

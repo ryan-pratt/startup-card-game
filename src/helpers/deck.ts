@@ -14,6 +14,10 @@ class Deck {
     }
     return cards;
   }
+
+  static discard = async (card : Card) : Promise<void> => {
+    await api.discard(card.cardId);
+  }
 }
 
 export default Deck;

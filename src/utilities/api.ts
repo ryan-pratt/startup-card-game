@@ -28,5 +28,8 @@ export default {
   drawCard: async () : Promise<number> => {
     const response : AxiosResponse = await axios.get(`${server}/card`);
     return parseInt(response.data);
+  },
+  discard: async (cardId : number) : Promise<void> => {
+    return axios.put(`${server}/card`, {cardId: cardId});
   }
 };
