@@ -32,9 +32,16 @@ class Game extends React.Component<GameProps, GameState> {
       }
     });
   }
+
+  finishedMulligan = () : void => {
+    // TODO: add end turn logic
+    this.setState({
+      showMulliganHand: false
+    });
+  }
   
   render() : JSX.Element {
-    if (this.state.showMulliganHand) return (<MulliganHand />);
+    if (this.state.showMulliganHand) return (<MulliganHand readyCallback={this.finishedMulligan} />);
     return (
       <div className="game">
         <p>this is the game content</p>

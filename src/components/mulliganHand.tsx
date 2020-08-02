@@ -1,10 +1,12 @@
 import React from 'react';
 import Card from '../objects/card';
 import Deck from '../helpers/deck';
+import api from '../utilities/api';
 import CardRenderer from './cardRenderer';
+import ArrayFunctions from '../utilities/arrayFunctions';
 
 type MulliganHandProps = {
-  
+  readyCallback : Function
 }
 
 type MulliganHandState = {
@@ -44,15 +46,14 @@ class MulliganHand extends React.Component<MulliganHandProps, MulliganHandState>
 
   commit = async () : Promise<void> => {
     const { allCards, selectedCards } = this.state;
-    const selected = allCards.filter(card => selectedCards.includes(card.instanceId));
-    const remaining = allCards.filter(card => !selectedCards.includes(card.instanceId));
+    const [selected, remaining] = ArrayFunctions.partition(allCards, (card : Card) => selectedCards.includes(card.instanceId));
     for (const card of selected) {
       await Deck.discard(card);
     }
-    const newCards = await Deck.drawMany(selectedCards.length);
-    this.setState({
-      allCards: remaining.concat(newCards)
-    });
+    const newCards = await Deck.drawMany(selected.length);
+    const hand = remaining.concat(newCards);
+    await api.commitHand(hand.map(card => card.cardId));
+    this.props.readyCallback();
   }
 
   render() : JSX.Element {

@@ -31,5 +31,13 @@ export default {
   },
   discard: async (cardId : number) : Promise<void> => {
     return axios.put(`${server}/card`, {cardId: cardId});
+  },
+
+  getHand: async () : Promise<number[]> => {
+    const response : AxiosResponse = await axios.get(`${server}/hand`);
+    return response.data.map((x : string) => parseInt(x));
+  },
+  commitHand: async (cards : number[]) : Promise<void> => {
+    return axios.post(`${server}/hand`, {cards: cards});
   }
 };
