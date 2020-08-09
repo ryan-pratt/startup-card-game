@@ -1,4 +1,12 @@
-The backend project is [here](https://github.com/ryan-pratt/startup-card-game-backend)
+The back end for this project is [here](https://github.com/ryan-pratt/startup-card-game-backend).
+
+This project is an online multiplayer implementation of the [IT Startup](http://www.playitstartup.com/) card game. The game's rulebook is available [here](https://www.playitstartup.com/beta-manual-v1.pdf).
+
+The overall technology stack is a React front end (this project), with a Flask back end (linked above). The communication layer consists of a REST API and websockets using [Socket.io](https://socket.io/). Redis is used as a data store.
+
+**This project is not yet complete.**
+
+# Auto-gen readme from CRA:
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
